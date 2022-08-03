@@ -1,0 +1,88 @@
+/* USERS */
+
+CREATE DATABASE database_control;
+
+USE database_control;
+
+CREATE TABLE users(
+    id CHAR(36) NOT NULL,
+    fullname VARCHAR(100) NOT NULL,
+    password VARCHAR(60) NOT NULL,
+    rut VARCHAR(20) NOT NULL,
+    user_id INT(11),
+    role VARCHAR(15) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    COLUMN updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+ALTER TABLE users
+    ADD position VARCHAR(30) NOT NULL;
+ALTER TABLE users
+    ADD status TINYINT(1) NOT NULL DEFAULT 1;
+
+ALTER TABLE users
+    ADD area INT NOT NULL;
+
+ALTER TABLE users
+    ADD FOREIGN KEY(user_id) REFERENCES areas(id);
+
+ALTER TABLE users
+	DROP FOREIGN KEY `user_id`;
+
+ALTER TABLE users
+    DROP COLUMN area;
+
+ALTER TABLE users 
+RENAME COLUMN user_id TO area_id;
+
+ALTER TABLE users
+    MODIFY rut VARCHAR(20) NOT NULL;
+
+ALTER TABLE users
+    MODIFY rut VARCHAR(20) NOT NULL;
+
+ALTER TABLE users
+    MODIFY area INT(11) NOT NULL;
+
+ALTER TABLE users
+    DROP COLUMN POSITION;
+
+ALTER TABLE USERS ALTER rut DROP DEFAULT;
+
+ALTER TABLE users CHANGE user_rut rut VARCHAR(20);
+
+DELETE FROM users WHERE id = "3f32d9be-1a50-4779-917d-ba591882d313";
+
+SELECT a.id, a.fullname, u.name FROM users a LEFT JOIN areas u on a.id = u.area_id;
+
+
+/* LOCATIONS */
+
+CREATE TABLE locations (
+    id INT(11) NOT NULL,
+    name VARCHAR(80) NOT NULL
+);
+
+ALTER TABLE locations
+    ADD PRIMARY KEY (id);
+
+ALTER TABLE locations
+    MODIFY id INT(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE locations
+    MODIFY id INT(11) NOT NULL AUTO_INCREMENT;
+
+/* AREAS */
+
+CREATE TABLE areas (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(80) NOT NULL,
+    PRIMARY KEY(id)
+);
+
+INSERT INTO AREAS (name)
+VALUES
+    ('TEST'),
+    ('TEST2'),
+    ('TEST3');
