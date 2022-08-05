@@ -2,7 +2,6 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const Bree = require('bree');
-const path = require('path');
 
 class Server {
 
@@ -47,6 +46,9 @@ class Server {
         });
         //Lecture
         this.app.use( cors() );
+
+        this.app.use( express.static('public') );
+
         this.app.use( express.json() );
 
     };
@@ -68,7 +70,7 @@ class Server {
         const bree = new Bree({
             jobs: [{
                 name: 'sendEmail',
-                interval : "at 10:20 pm",
+                interval : "at 10:00 pm",
                 worker: {
                     workerData: {
                         description: 'This job will send emails.'
