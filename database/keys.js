@@ -5,8 +5,8 @@ module.exports = {
 
     database: {
         host: process.env.HOST,
-        user: 'cba84083_administrador_database',
-        password: 'balvin312ll',
+        user: process.env.USER,
+        password: process.env.PASSWORD,
         database: process.env.DATABASE,
     }
 
