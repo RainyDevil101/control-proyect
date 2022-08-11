@@ -12,6 +12,7 @@ class Server {
         this.paths = {
             // example: '/api/example',
             user:        '/api/user',
+            userExcel:   '/api/userExcel',
             auth:        '/api/auth',
             test:        '/api/test',
             location:    '/api/location',
@@ -56,6 +57,7 @@ class Server {
     routes() {
         // this.app.use(this.paths.example, require('../routes/exmaple.routes'));
         this.app.use(this.paths.user, require('../routes/user.routes'));
+        this.app.use(this.paths.userExcel, require('../routes/userExcel.routes'));
         this.app.use(this.paths.auth, require('../routes/auth.routes'));
         this.app.use(this.paths.test, require('../routes/test.routes'));
         this.app.use(this.paths.location, require('../routes/location.routes'));
@@ -70,13 +72,13 @@ class Server {
         const bree = new Bree({
             jobs: [{
                 name: 'sendEmail',
-                interval : "at 10:00 pm",
+                interval : "at 08:30 am",
                 worker: {
                     workerData: {
                         description: 'This job will send emails.'
                     },
                 },
-            }]
+            }],
         });
 
         bree.start();
@@ -85,7 +87,7 @@ class Server {
 
     listen() {
         this.server.listen(this.port, () => {
-            console.log('Server rdy :p', this.port);
+            console.log('Server online', this.port);
         });
     };
 

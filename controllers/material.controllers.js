@@ -1,15 +1,18 @@
 const { response } = require("express");
+const nodemailer = require("nodemailer");
 const pool = require("../database/database");
 
 // Get users
 
 const getMaterials = async (req = request, res = response) => {
-
   const getUser = req.user;
 
   const userDivisionsId = getUser[0].users_divisions;
 
-  const getMaterials = await pool.query("SELECT * FROM materials WHERE status = 1 AND materials_divisions = ?", [userDivisionsId]);
+  const getMaterials = await pool.query(
+    "SELECT * FROM materials WHERE status = 1 AND materials_divisions = ?",
+    [userDivisionsId]
+  );
 
   const materials = Object.values(JSON.parse(JSON.stringify(getMaterials)));
 
@@ -19,16 +22,16 @@ const getMaterials = async (req = request, res = response) => {
 };
 
 const getMaterial = async (req = request, res = response) => {
-
   const { id } = req.params;
 
   const getUser = req.user;
 
   const userDivisionsId = getUser[0].users_divisions;
 
-  const material = await pool.query("SELECT * FROM materials WHERE id = ? AND materials_divisions = ?", [
-    id, userDivisionsId
-  ]);
+  const material = await pool.query(
+    "SELECT * FROM materials WHERE id = ? AND materials_divisions = ?",
+    [id, userDivisionsId]
+  );
 
   res.status(200).json({
     material,
@@ -36,6 +39,7 @@ const getMaterial = async (req = request, res = response) => {
 };
 
 const createMaterial = async (req = request, res = response) => {
+  let emails = [];
 
   const {
     cantidad_bultos,
@@ -43,6 +47,7 @@ const createMaterial = async (req = request, res = response) => {
     code,
     destination,
     transport_number,
+    ubication,
   } = req.body.materialForm;
 
   const now = new Date();
@@ -56,14 +61,18 @@ const createMaterial = async (req = request, res = response) => {
   const materials_divisions = req.body.userDivision;
   const created_by = req.body.id;
   const transport_number_two = "PENDIENTE";
-  
+  const destination_id = destination.id;
+  const destination_name = destination.nombre;
+
   const material = {
     cantidad_bultos,
     materials_divisions,
     cantidad,
     code,
+    ubication,
     alarm_one,
-    destination,
+    destination_id,
+    destination_name,
     image_one,
     image_two,
     transport_number,
@@ -71,26 +80,74 @@ const createMaterial = async (req = request, res = response) => {
     created_by,
   };
 
-  const resp = await pool.query("INSERT INTO materials set ?", [material]);
+  try {
+    const userDivision = req.user[0].users_divisions;
 
-  const id = resp.insertId;
+    const resp = await pool.query("INSERT INTO materials set ?", [material]);
 
-  res.status(200).json({
-    id,
-  });
+    const id = resp.insertId;
+
+    const usersEmail = await pool.query(
+      "SELECT email FROM users WHERE users_divisions = ? AND email != 'PENDIENTE'",
+      [userDivision]
+    );
+
+    
+    const usersEmailJson = Object.values(
+      JSON.parse(JSON.stringify(usersEmail))
+      );
+      
+      for (const e of usersEmailJson) {
+        emails.push(e.email);
+      }
+      
+      if (emails.length === 0) {
+        return res.status(200).json({
+          msg: "Material registrado",
+          id,
+        });
+      } else {
+      const transporter = nodemailer.createTransport({
+        host: process.env.HOSTM,
+        port: process.env.PORTM,
+        secure: false,
+        auth: {
+          user: process.env.USERM,
+          pass: process.env.PASSWORDM,
+        },
+        tls: {
+          rejectUnauthorized: false,
+        },
+      });
+
+      const info = await transporter.sendMail({
+        from: "'Control de materiales' <alexis-test@balvin-cat.cl>",
+        to: "aheca96@gmail.com",
+        subject: "Nuevo registrado para ser despachado.",
+        text: `Estimado, se ha registrado un nuevo bulto para ser despachado con id: ${id}`,
+      });
+
+      return res.status(200).json({
+        msg: "Material registrado con éxito y emails enviados",
+        id,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      msg: "Error al registrar, intente nuevamente"
+    });
+  }
 };
 
 const updateMaterial = async (req = request, res = response) => {
-
   const { id } = req.params;
 
   const getUser = req.user;
 
   const userDivisionsId = getUser[0].users_divisions;
 
-  const {
-    transport_number_two,
-  } = req.body.materialUpdate;
+  const { transport_number_two } = req.body.materialUpdate;
 
   const image_two = req.body.pictureTwo;
   const date_out = new Date();
@@ -102,13 +159,16 @@ const updateMaterial = async (req = request, res = response) => {
     image_two,
     date_out,
     pendiente,
-    alarm_one_on
+    alarm_one_on,
   };
-  
-  const resp = await pool.query('UPDATE materials SET ? WHERE id = ? AND status = 1 AND materials_divisions = ?', [material, id, userDivisionsId]);
-  
+
+  const resp = await pool.query(
+    "UPDATE materials SET ? WHERE id = ? AND status = 1 AND materials_divisions = ?",
+    [material, id, userDivisionsId]
+  );
+
   const idUpdated = resp.insertId;
-  
+
   res.status(200).json({
     idUpdated,
   });

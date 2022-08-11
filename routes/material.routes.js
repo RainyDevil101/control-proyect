@@ -22,8 +22,8 @@ router.get(
   "/",
   [
     validateJWT,
-    // validateRoles('ADMIN_ROLE', 'USER_ROLE'),
-    // validateFields,
+    validateRoles('ADMIN_ROLE', 'PLANNER_ROLE', 'OPERATOR_ROLE'),
+    validateFields,
   ],
   getMaterials
 );
@@ -34,8 +34,8 @@ router.get(
   "/:id",
   [
     validateJWT,
-    // validateRoles('ADMIN_ROLE', 'USER_ROLE'),
-    // validateFields,
+    validateRoles('ADMIN_ROLE', 'PLANNER_ROLE', 'OPERATOR_ROLE'),
+    validateFields,
   ],
   getMaterial
 );
@@ -46,8 +46,8 @@ router.post(
   "/",
   [
     validateJWT,
-    // validateRoles('ADMIN_ROLE', 'USER_ROLE'),
-    // validateFields,
+    validateRoles('ADMIN_ROLE', 'PLANNER_ROLE', 'OPERATOR_ROLE'),
+    validateFields,
   ],
   createMaterial
 );
@@ -58,8 +58,8 @@ router.put(
   "/:id",
   [
     validateJWT,
-    // validateRoles('ADMIN_ROLE', 'USER_ROLE'),
-    // validateFields,
+    validateRoles('ADMIN_ROLE', 'PLANNER_ROLE', 'OPERATOR_ROLE'),
+    validateFields,
   ],
   updateMaterial
 );
@@ -70,8 +70,8 @@ router.delete(
   "/:id",
   [
     validateJWT,
-    // validateRoles('ADMIN_ROLE', 'USER_ROLE'),
-    // validateFields,
+    validateRoles('none'),
+    validateFields,
   ],
   deleteMaterial
 );

@@ -26,6 +26,7 @@ const getUser = async (req = request, res = response) => {
 };
 
 const createUser = async (req = request, res = response) => {
+  
   const {
     fullname,
     fulllastname,

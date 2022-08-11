@@ -19,16 +19,21 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
+    "body-parser": "^1.20.0",
     "bree": "^9.1.1",
-    "nodemailer": "^6.7.7",
-    "jsonwebtoken": "^8.5.1",
-    "rut.js": "^2.1.0",
-    "uuid": "^8.3.2",
-    "morgan": "^1.10.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "email-validator": "^2.0.4",
     "express": "^4.18.1",
     "express-validator": "^6.14.2",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
-    "dotenv": "^16.0.1"
+    "nodemailer": "^6.7.7",
+    "read-excel-file": "^5.4.4",
+    "rut.js": "^2.1.0",
+    "uuid": "^8.3.2",
+    "xlsx": "^0.18.5"
   }
 }

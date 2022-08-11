@@ -1,9 +1,7 @@
 const pool = require("../database/database");
 
 const mExists = async (email = "") => {
-
-
-
+  
   const emailExist = await pool.query("SELECT * FROM users WHERE email = ?", [email]);
 
   if(emailExist.length > 0) {

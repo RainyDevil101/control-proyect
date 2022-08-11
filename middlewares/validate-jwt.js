@@ -20,7 +20,7 @@ const validateJWT = async (req = request, res = response, next) => {
 
       if (user[0].length === 0) {
         return res.status(401).json({
-            msg: 'Invalid token 1'
+            msg: 'Invalid token'
         })
       }
 
@@ -28,7 +28,7 @@ const validateJWT = async (req = request, res = response, next) => {
 
       if (!user[0].status) {
         return res.status(401).json({
-            msg: 'Invalid token 2'
+            msg: 'Invalid token'
         })
       }
 
