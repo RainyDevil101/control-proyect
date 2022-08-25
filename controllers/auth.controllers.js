@@ -58,6 +58,7 @@ const login = async (req, res = response) => {
       token,
     });
   } catch (error) {
+    console.log(error);
     res.status(400).json({
       msg: "Not request",
     });

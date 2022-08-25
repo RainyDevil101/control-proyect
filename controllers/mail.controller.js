@@ -16,9 +16,9 @@ const testEmail = async (req = request, res = response) => {
   });
 
   const info = await transporter.sendMail({
-    from: "'Alexis Testing' <alexis-test@balvin-cat.cl>",
+    from: "'Control Carga test' <controlcargas@cacciuttolo.cl>",
     to: "aheca96@gmail.com",
-    subject: "Prueba envio de correo - cPanelHosting",
+    subject: "Prueba envio de correo - Linets",
     text: "hello world",
   });
   console.log("Message sent", info.messageId);

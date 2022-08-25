@@ -13,6 +13,7 @@ class Server {
             // example: '/api/example',
             user:        '/api/user',
             userExcel:   '/api/userExcel',
+            dataExcel:   '/api/dataExcel',
             auth:        '/api/auth',
             test:        '/api/test',
             location:    '/api/location',
@@ -58,6 +59,7 @@ class Server {
         // this.app.use(this.paths.example, require('../routes/exmaple.routes'));
         this.app.use(this.paths.user, require('../routes/user.routes'));
         this.app.use(this.paths.userExcel, require('../routes/userExcel.routes'));
+        this.app.use(this.paths.dataExcel, require('../routes/dataExcel.routes'));
         this.app.use(this.paths.auth, require('../routes/auth.routes'));
         this.app.use(this.paths.test, require('../routes/test.routes'));
         this.app.use(this.paths.location, require('../routes/location.routes'));

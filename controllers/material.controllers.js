@@ -60,6 +60,8 @@ const createMaterial = async (req = request, res = response) => {
   const image_two = "PENDIENTE";
   const materials_divisions = req.body.userDivision;
   const created_by = req.body.id;
+  const created_by_name = req.user[0].fullname;
+  const created_by_lastname = req.user[0].fulllastname;
   const transport_number_two = "PENDIENTE";
   const destination_id = destination.id;
   const destination_name = destination.nombre;
@@ -78,6 +80,8 @@ const createMaterial = async (req = request, res = response) => {
     transport_number,
     transport_number_two,
     created_by,
+    created_by_name,
+    created_by_lastname,
   };
 
   try {
@@ -92,21 +96,20 @@ const createMaterial = async (req = request, res = response) => {
       [userDivision]
     );
 
-    
     const usersEmailJson = Object.values(
       JSON.parse(JSON.stringify(usersEmail))
-      );
-      
-      for (const e of usersEmailJson) {
-        emails.push(e.email);
-      }
-      
-      if (emails.length === 0) {
-        return res.status(200).json({
-          msg: "Material registrado",
-          id,
-        });
-      } else {
+    );
+
+    for (const e of usersEmailJson) {
+      emails.push(e.email);
+    }
+
+    if (emails.length === 0) {
+      return res.status(200).json({
+        msg: "Material registrado",
+        id,
+      });
+    } else {
       const transporter = nodemailer.createTransport({
         host: process.env.HOSTM,
         port: process.env.PORTM,
@@ -120,12 +123,14 @@ const createMaterial = async (req = request, res = response) => {
         },
       });
 
-      const info = await transporter.sendMail({
-        from: "'Control de materiales' <alexis-test@balvin-cat.cl>",
+      await transporter.sendMail({
+        from: "'Control de materiales' <controlcargas@cacciuttolo.cl>",
         to: "aheca96@gmail.com",
         subject: "Nuevo registrado para ser despachado.",
         text: `Estimado, se ha registrado un nuevo bulto para ser despachado con id: ${id}`,
       });
+
+  
 
       return res.status(200).json({
         msg: "Material registrado con éxito y emails enviados",
@@ -135,7 +140,7 @@ const createMaterial = async (req = request, res = response) => {
   } catch (error) {
     console.log(error);
     return res.status(400).json({
-      msg: "Error al registrar, intente nuevamente"
+      msg: "Error al registrar, intente nuevamente",
     });
   }
 };
@@ -152,14 +157,18 @@ const updateMaterial = async (req = request, res = response) => {
   const image_two = req.body.pictureTwo;
   const date_out = new Date();
   const pendiente = 0;
-  const alarm_one_on = 0;
+  const despatched_by = req.body.id;
+  const despatched_by_name = req.user[0].fullname;
+  const despatched_by_lastname = req.user[0].fulllastname;
 
   const material = {
     transport_number_two,
     image_two,
     date_out,
     pendiente,
-    alarm_one_on,
+    despatched_by,
+    despatched_by_name,
+    despatched_by_lastname,
   };
 
   const resp = await pool.query(

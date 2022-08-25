@@ -1,10 +1,8 @@
 const { response } = require("express");
 const XLSX = require("xlsx");
-const validator = require("email-validator");
 const path = require("path");
 const pool = require("../database/database");
 const { validate, clean, format } = require("rut.js");
-("read-excel-file");
 
 const postUsersExcel = async (req, res = response) => {
   // ARRAY DE USUARIOS VERIFICADOS PARA SER REGISTRADOS
