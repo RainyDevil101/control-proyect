@@ -3,12 +3,12 @@ const nodemailer = require("nodemailer");
 
 const testEmail = async (req = request, res = response) => {
   const transporter = nodemailer.createTransport({
-    host: process.env.HOSTM,
-    port: process.env.PORTM,
+    host: "webhosting.linets.cl",
+    port: 587,
     secure: false,
     auth: {
-      user: process.env.USERM,
-      pass: process.env.PASSWORDM,
+      user: "controlcargas@cacciuttolo.cl",
+      pass: "3vmRK5RF5G",
     },
     tls: {
       rejectUnauthorized: false,
