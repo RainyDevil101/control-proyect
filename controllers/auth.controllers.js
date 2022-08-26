@@ -4,6 +4,7 @@ const pool = require("../database/database");
 const { generateJWT } = require("../helpers/generate-jwt");
 
 const login = async (req, res = response) => {
+  
   const { rut, passwordT } = req.body;
 
   try {

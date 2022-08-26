@@ -4,8 +4,8 @@ dotenv.config();
 module.exports = {
 
     database: {
-        host: process.env.HOST,
-        user: process.env.USER,
+        host: "webhosting.linets.cl",
+        user: "cba84083_administrador_database",
         password: process.env.PASSWORD,
         database: process.env.DATABASE,
     }
