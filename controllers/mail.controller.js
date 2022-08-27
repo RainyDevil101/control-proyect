@@ -7,7 +7,7 @@ const testEmail = async (req = request, res = response) => {
     port: process.env.PORTM,
     secure: false,
     auth: {
-      user: "controlcargas@cacciuttolo.cl",
+      user: process.env.USERM,
       pass: process.env.PASSWORDM,
     },
     tls: {

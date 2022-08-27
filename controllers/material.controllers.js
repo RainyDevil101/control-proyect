@@ -111,12 +111,12 @@ const createMaterial = async (req = request, res = response) => {
       });
     } else {
       const transporter = nodemailer.createTransport({
-        host: "webhosting.linets.cl",
-        port: 587,
+        host: process.env.HOSTM,
+        port: process.env.PORTM,
         secure: false,
         auth: {
-          user: "controlcargas@cacciuttolo.cl",
-          pass: "3vmRK5RF5G",
+          user: process.env.USERM,
+          pass: process.env.PASSWORDM,
         },
         tls: {
           rejectUnauthorized: false,
