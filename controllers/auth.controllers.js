@@ -4,11 +4,9 @@ const pool = require("../database/database");
 const { generateJWT } = require("../helpers/generate-jwt");
 
 const login = async (req, res = response) => {
-  
   const { rut, passwordT } = req.body;
 
   try {
-    
     //Email exists
 
     const user = await pool.query("SELECT * FROM users WHERE rut = ? LIMIT 1", [
@@ -32,32 +30,45 @@ const login = async (req, res = response) => {
     //Correct password
 
     if (user[0].password !== user[0].firstpassword) {
+
       const validatePassword = bcryptjs.compareSync(
         passwordT,
         user[0].password
       );
 
-      if (!validatePassword) {
+      if (validatePassword === true) {
+
+        const token = await generateJWT(user[0].id);
+
+
+        return res.status(200).json({
+          user,
+          token,
+        });
+      } else {
         return res.status(400).json({
           msg: "Usuario / contraseña no correctos",
         });
       }
     }
 
-    if ( passwordT !== user[0].password ) {
+    if (user[0].password === user[0].firstpassword) {
+      
+      if (passwordT === user[0].firstpassword) {
+        
+        const token = await generateJWT(user[0].id);
+        return res.status(200).json({
+          user,
+          token,
+        });
+      } else {
         return res.status(400).json({
-            msg: "Usuario / contraseña no correctos",
-          });
-    };
+          msg: "Usuario / contraseña no correctos",
+        });
+      }
 
-    //Generate JWT
+    }
 
-    const token = await generateJWT(user[0].id);
-
-    res.status(200).json({
-      user,
-      token,
-    });
   } catch (error) {
     console.log(error);
     res.status(400).json({
