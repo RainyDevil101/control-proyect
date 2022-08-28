@@ -124,13 +124,15 @@ const createMaterial = async (req = request, res = response) => {
         },
       });
 
-      console.log(process.env.HOSTM, process.env.PORTM, process.env.USERM, process.env.PASSWORDM);
-
       await transporter.sendMail({
         from: "'Control de materiales' <alexis-test@balvin-cat.cl",
-        to: "desert5@outlook.es",
+        to: "aheca96@gmail.com",
         subject: "Nuevo registrado para ser despachado.",
-        text: `Estimado, se ha registrado un nuevo bulto para ser despachado con id: ${id}`,
+        text: `Estimado, se ha registrado un nuevo bulto para ser despachado con id: ${id}.
+        
+        Por favor no responder este correo.
+        `,
+
       });
 
   
