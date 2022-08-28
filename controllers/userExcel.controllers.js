@@ -108,6 +108,7 @@ const postUsersExcel = async (req, res = response) => {
       let userRole = role[d.CARGO] || cargoNull;
 
       // AGREGA LOS USUARIOS CON LOS DATOS CORRECTOS AL ARRAY DE USERS
+      console.log(validateRut, d.NOMBRES);
       if (
         divisionId !== null &&
         d.NOMBRES !== null &&
@@ -139,8 +140,6 @@ const postUsersExcel = async (req, res = response) => {
     }
   }
 
-  console.log(users);
-
   //VERIFICACIÓN DE ARRAY USERS NO VACÍO
   if (users.length === 0) {
     return res.status(400).json({
@@ -158,6 +157,7 @@ const postUsersExcel = async (req, res = response) => {
   }
 
   //VERIFICAR QUE LOS USUARIOS NO SE ENCUENTRAN YA REGISTRADOS
+
   const getUsersRut = await pool.query(
     "SELECT rut FROM users WHERE rut IN (?)",
     [rutUsers]
@@ -169,9 +169,10 @@ const postUsersExcel = async (req, res = response) => {
   );
 
   //SI EXISTEN USUARIOS YA REGISTRADO, SE FILTRAN PARA NO VOLVER A REGISTRARLOS
+
   if (getUsersRut.length > 0) {
+
     try {
-      console.log('as');
       //SE EXTRAE EL VALUE RUT
       const rutUsersGet = changeGetUsersFormat.map((c) => c.rut);
 
@@ -180,6 +181,7 @@ const postUsersExcel = async (req, res = response) => {
         (user) => !rutUsersGet.includes(user.rut)
       );
       //SE CREA UN ARRAY CON CADA USUARIO LISTO PARA SER REGISTRADO
+
       if (filteredUsersByRut.length > 0) {
         const userToInsert = filteredUsersByRut.map((c) => [
           c.fullname,
@@ -193,8 +195,6 @@ const postUsersExcel = async (req, res = response) => {
           c.password,
         ]);
 
-        console.log(userToInsert);
-
         const response = await pool.query(
           "INSERT INTO users (fullname, fulllastname, email, rut, users_divisions, firstpassword, role, position, password) VALUES ?",
           [userToInsert]
@@ -205,7 +205,7 @@ const postUsersExcel = async (req, res = response) => {
         });
       } else {
         return res.status(400).json({
-          msg: "Error al cargar el archivo",
+          msg: "No hay usuarios nuevos para registrar",
         });
       }
     } catch (error) {
@@ -215,8 +215,10 @@ const postUsersExcel = async (req, res = response) => {
       });
     }
   } else {
-    console.log('wfg');
-    return;
+
+    return res.status(400).json({
+      msg: "No hay usuarios válidos para registrar",
+    });
 
 
     const response = await pool.query(
