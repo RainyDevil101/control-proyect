@@ -26,6 +26,7 @@ const getUser = async (req = request, res = response) => {
 };
 
 const createUser = async (req = request, res = response) => {
+  console.log(req.body);
   const {
     fullname,
     fulllastname,
@@ -36,6 +37,7 @@ const createUser = async (req = request, res = response) => {
     rut,
     users_divisions,
   } = req.body;
+
 
   const firstpassword = fullname + fulllastname;
 
