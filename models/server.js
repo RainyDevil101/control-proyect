@@ -74,7 +74,7 @@ class Server {
         const bree = new Bree({
             jobs: [{
                 name: 'sendEmail',
-                interval : "at 12:30 pm",
+                interval : "at 08:30 am",
                 worker: {
                     workerData: {
                         description: 'This job will send emails.'

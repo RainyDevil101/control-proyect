@@ -1,11 +1,11 @@
 const nodemailer = require("nodemailer");
 const pool = require("../database/database");
 const process = require('process');
-const { parentPort } = require('worker_threads');
+const { parentPort, workerData } = require('worker_threads');
 const { converTime, convertHour } = require("../helpers/convertDate");
 
 async function main() {
-
+  
   const materialsDivisionId = [];
 
   const emailsTeniente = [];
@@ -232,11 +232,8 @@ async function main() {
     return;
   }
 
+  parentPort.postMessage('done');
+
 }
 
-if (parentPort) parentPort.postMessage('done');
-else process.exit(0);
-
-
-
-main().catch((err));
+main().catch((err => console.log(err)));
