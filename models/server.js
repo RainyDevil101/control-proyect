@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
-const Bree = require('bree');
+// const Bree = require('bree');
 
 class Server {
 
@@ -30,7 +30,7 @@ class Server {
         //Application Routes
         this.routes();
         
-        this.initJobs();
+        // this.initJobs();
 
     };
 
@@ -69,23 +69,23 @@ class Server {
         this.app.use(this.paths.mail, require('../routes/mail.routes'));
     };
 
-    initJobs() {
+    // initJobs() {
 
-        const bree = new Bree({
-            jobs: [{
-                name: 'sendEmail',
-                interval : "at 08:30 am",
-                worker: {
-                    workerData: {
-                        description: 'This job will send emails.'
-                    },
-                },
-            }],
-        });
+    //     const bree = new Bree({
+    //         jobs: [{
+    //             name: 'sendEmail',
+    //             interval : "at 08:30 am",
+    //             worker: {
+    //                 workerData: {
+    //                     description: 'This job will send emails.'
+    //                 },
+    //             },
+    //         }],
+    //     });
 
-        bree.start();
+    //     bree.start();
 
-    };
+    // };
 
     listen() {
         this.server.listen(this.port, () => {
