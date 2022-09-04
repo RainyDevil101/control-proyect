@@ -13,6 +13,8 @@ const login = async (req, res = response) => {
       rut,
     ]);
 
+    console.log(user);
+
     if (user.length === 0) {
       return res.status(400).json({
         msg: "Usuario / contraseña no correctos",
