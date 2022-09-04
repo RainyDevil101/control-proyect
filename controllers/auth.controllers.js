@@ -13,8 +13,6 @@ const login = async (req, res = response) => {
       rut,
     ]);
 
-    console.log(user);
-
     if (user.length === 0) {
       return res.status(400).json({
         msg: "Usuario / contraseña no correctos",
@@ -42,6 +40,8 @@ const login = async (req, res = response) => {
 
         const token = await generateJWT(user[0].id);
 
+        console.log(token, 1);
+
 
         return res.status(200).json({
           user,
@@ -59,10 +59,14 @@ const login = async (req, res = response) => {
       if (passwordT === user[0].firstpassword) {
         
         const token = await generateJWT(user[0].id);
+
+        console.log(token, 2);
+
         return res.status(200).json({
           user,
           token,
         });
+
       } else {
         return res.status(400).json({
           msg: "Usuario / contraseña no correctos",
@@ -79,6 +83,7 @@ const login = async (req, res = response) => {
   }
 };
 const renovateToken = async (req, res = response) => {
+
   const { user } = req;
 
   const token = await generateJWT(user[0].id);
