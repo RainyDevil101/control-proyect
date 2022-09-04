@@ -4,6 +4,9 @@ const pool = require("../database/database");
 const { generateJWT } = require("../helpers/generate-jwt");
 
 const login = async (req, res = response) => {
+
+  console.log(generateJWT, 1);
+
   const { rut, passwordT } = req.body;
 
   try {
@@ -40,9 +43,6 @@ const login = async (req, res = response) => {
 
         const token = await generateJWT(user[0].id);
 
-        console.log(token, 1);
-
-
         return res.status(200).json({
           user,
           token,
@@ -60,8 +60,6 @@ const login = async (req, res = response) => {
         
         const token = await generateJWT(user[0].id);
 
-        console.log(token, 2);
-
         return res.status(200).json({
           user,
           token,
@@ -76,6 +74,8 @@ const login = async (req, res = response) => {
     }
 
   } catch (error) {
+  console.log(generateJWT, 2);
+
     console.log(error);
     res.status(400).json({
       msg: "Not request",
