@@ -3,9 +3,17 @@ const pool = require('../database/database');
 
 const getDestinations = async (req = request, res = response) => {
 
-    const getDestinations = await pool.query('SELECT * FROM destination WHERE status = 1 ORDER BY nombre ASC');
+    const getUser = req.user;
+
+    const userDivisionsId = getUser[0].users_divisions;
+
+    // const userDivisionString = userDivision.toString();
+
+    const getDestinations = await pool.query('SELECT * FROM destination WHERE status = 1 AND division_code = ? ORDER BY nombre ASC', [userDivisionsId]);
 
     const destinations = Object.values(JSON.parse(JSON.stringify(getDestinations)));
+
+    console.log(destinations);
 
     res.status(200).json({
         destinations,

@@ -20,9 +20,9 @@ const router = Router();
 router.get(
   "/",
   [
-    // validateJWT,
-    // validateRoles('ADMIN_ROLE', 'USER_ROLE'),
-    // validateFields,
+    validateJWT,
+    validateRoles('ADMIN_ROLE', 'USER_ROLE'),
+    validateFields,
   ],
   getDestinations
 );
