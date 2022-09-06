@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 // const Bree = require('bree');
+const whiteList = ['https://www.balvin-cat.cl'];
 
 class Server {
 
@@ -47,7 +48,7 @@ class Server {
             next();
         });
         //Lecture
-        this.app.use( cors() );
+        this.app.use( cors({ origin: whiteList }) );
 
         this.app.use( express.static('public') );
 
