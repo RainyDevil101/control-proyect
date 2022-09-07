@@ -1,1 +1,0 @@
-{"version":3,"file":"js/all-material.2869f5db.js","mappings":"oHAAA,MAAMA,EAAS,GAETC,EAAcD,EAEpB","sources":["webpack://backend/./src/modules/material/views/AllMaterial.vue"],"sourcesContent":["const script = {}\n\nconst __exports__ = script;\n\nexport default __exports__"],"names":["script","__exports__"],"sourceRoot":""}
