@@ -21,7 +21,7 @@ router.get(
   "/",
   [
     validateJWT,
-    validateRoles('ADMIN_ROLE', 'USER_ROLE'),
+    validateRoles('ADMIN_ROLE', 'PLANNER_ROLE', 'OPERATOR_ROLE'),
     validateFields,
   ],
   getDestinations

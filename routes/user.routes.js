@@ -11,7 +11,7 @@ const router = Router();
 
 router.get('/', [
     validateJWT,
-    validateRoles('ADMIN_ROLE', 'OPERATOR_ROLE'),
+    validateRoles('ADMIN_ROLE'),
     validateFields,
 ], getUsers);
 
