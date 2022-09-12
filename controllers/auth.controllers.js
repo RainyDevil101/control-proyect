@@ -5,7 +5,6 @@ const { generateJWT } = require("../helpers/generate-jwt");
 
 const login = async (req, res = response) => {
 
-  console.log(generateJWT, 1);
 
   const { rut, passwordT } = req.body;
 
@@ -74,7 +73,6 @@ const login = async (req, res = response) => {
     }
 
   } catch (error) {
-  console.log(generateJWT, 2);
 
     console.log(error);
     res.status(400).json({
