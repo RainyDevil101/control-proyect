@@ -85,7 +85,6 @@ const createMaterial = async (req = request, res = response) => {
   };
 
   try {
-
     const userDivision = req.user[0].users_divisions;
 
     const resp = await pool.query("INSERT INTO materials set ?", [material]);
@@ -111,9 +110,8 @@ const createMaterial = async (req = request, res = response) => {
         id,
       });
     } else {
-
       const transporter = nodemailer.createTransport({
-        host:  process.env.HOSTM,
+        host: process.env.HOSTM,
         port: process.env.PORTM,
         secure: false,
         auth: {
@@ -125,24 +123,24 @@ const createMaterial = async (req = request, res = response) => {
         },
       });
 
-      await transporter.sendMail({
-        from: "Control de materiales <controlcargas@cacciuttolo.cl",
-        to: "Mcarr049@contratistas.codelco.cl",
-        subject: "Nuevo registrado para ser despachado.",
-        text: `Estimado, se ha registrado un nuevo bulto para ser despachado con id: ${id}.
+      await transporter.sendMail(
+        {
+          from: "Control de materiales <controlcargas@cacciuttolo.cl",
+          to: "Mcarr049@contratistas.codelco.cl",
+          subject: "Nuevo registrado para ser despachado.",
+          text: `Estimado, se ha registrado un nuevo bulto para ser despachado con id: ${id}.
         
         Por favor no responder este correo.
         `,
-
-      }, function(error, info) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log(info);
+        },
+        function (error, info) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log(info);
+          }
         }
-      });
-
-  
+      );
 
       return res.status(200).json({
         msg: "Material registrado con éxito y emails enviados",
