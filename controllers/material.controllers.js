@@ -126,7 +126,7 @@ const createMaterial = async (req = request, res = response) => {
       await transporter.sendMail(
         {
           from: "Control de materiales <controlcargas@cacciuttolo.cl",
-          to: "Mcarr049@contratistas.codelco.cl",
+          to: [emails],
           subject: "Nuevo registrado para ser despachado.",
           text: `Estimado, se ha registrado un nuevo bulto para ser despachado con id: ${id}.
         
