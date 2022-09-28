@@ -129,7 +129,8 @@ const createMaterial = async (req = request, res = response) => {
           to: [emails],
           subject: "Nuevo registrado para ser despachado.",
           text: `Estimado, se ha registrado un nuevo bulto para ser despachado con id: ${id}.
-        
+        Click en el siguiente enlace para despachar el bulto: https://controlcargas.cacciuttolo.cl/material/get-material
+
         Por favor no responder este correo.
         `,
         },
