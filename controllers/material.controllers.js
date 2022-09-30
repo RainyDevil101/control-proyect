@@ -168,7 +168,7 @@ const updateMaterial = async (req = request, res = response) => {
   const image_two = req.body.pictureTwo;
   const date_out = new Date();
   const pendiente = 0;
-  const despatched_by = req.body.id;
+  const despatched_by = req.user[0].id;
   const despatched_by_name = req.user[0].fullname;
   const despatched_by_lastname = req.user[0].fulllastname;
 
