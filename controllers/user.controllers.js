@@ -1,6 +1,5 @@
 const { response } = require("express");
 const pool = require("../database/database");
-const uuid = require("uuid");
 const bcryptjs = require("bcryptjs");
 
 // Get users
@@ -38,9 +37,6 @@ const createUser = async (req = request, res = response) => {
     users_divisions,
   } = req.body;
 
-
-  const firstpassword = fullname + fulllastname;
-
   const salt = bcryptjs.genSaltSync(10);
   const password = bcryptjs.hashSync(passwordT, salt);
 
@@ -53,7 +49,6 @@ const createUser = async (req = request, res = response) => {
     position,
     rut,
     users_divisions,
-    firstpassword,
   };
 
   await pool.query("INSERT INTO users set ?", [userCreated]);

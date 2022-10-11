@@ -13,8 +13,6 @@ const getDestinations = async (req = request, res = response) => {
 
     const destinations = Object.values(JSON.parse(JSON.stringify(getDestinations)));
 
-    console.log(destinations);
-
     res.status(200).json({
         destinations,
     });

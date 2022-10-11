@@ -126,7 +126,7 @@ const createMaterial = async (req = request, res = response) => {
       await transporter.sendMail(
         {
           from: "Control de materiales <controlcargas@cacciuttolo.cl",
-          to: [emails],
+          to: "aheca96@gmail.com",
           subject: "Nuevo registrado para ser despachado.",
           text: `Estimado, se ha registrado un nuevo bulto para ser despachado con id: ${id}.
         Click en el siguiente enlace para despachar el bulto: https://controlcargas.cacciuttolo.cl/material/get-material

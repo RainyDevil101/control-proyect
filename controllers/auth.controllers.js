@@ -31,7 +31,7 @@ const login = async (req, res = response) => {
 
     //Correct password
 
-    if (user[0].password !== user[0].firstpassword) {
+    if (user[0].password) {
 
       const validatePassword = bcryptjs.compareSync(
         passwordT,
@@ -51,25 +51,6 @@ const login = async (req, res = response) => {
           msg: "Usuario / contraseña no correctos",
         });
       }
-    }
-
-    if (user[0].password === user[0].firstpassword) {
-      
-      if (passwordT === user[0].firstpassword) {
-        
-        const token = await generateJWT(user[0].id);
-
-        return res.status(200).json({
-          user,
-          token,
-        });
-
-      } else {
-        return res.status(400).json({
-          msg: "Usuario / contraseña no correctos",
-        });
-      }
-
     }
 
   } catch (error) {
