@@ -19,7 +19,6 @@ class Server {
             division:    '/api/division',
             material:    '/api/material',
             destination: '/api/destination',
-            mail:        '/api/mail',
         };
 
         
@@ -65,7 +64,6 @@ class Server {
         this.app.use(this.paths.division, require('../routes/division.routes'));
         this.app.use(this.paths.material, require('../routes/material.routes'));
         this.app.use(this.paths.destination, require('../routes/destination.routes'));
-        this.app.use(this.paths.mail, require('../routes/mail.routes'));
     };
 
     // initJobs() {
