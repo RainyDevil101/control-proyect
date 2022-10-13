@@ -5,6 +5,7 @@ const pool = require("../database/database");
 // Get users
 
 const getMaterials = async (req = request, res = response) => {
+  
   const getUser = req.user;
 
   const userDivisionsId = getUser[0].users_divisions;

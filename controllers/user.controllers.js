@@ -5,8 +5,14 @@ const bcryptjs = require("bcryptjs");
 // Get users
 
 const getUsers = async (req = request, res = response) => {
+
+  const getUser = req.user;
+
+  const userDivisionsId = getUser[0].users_divisions;
+
   const users = await pool.query(
-    "SELECT id, fullname, fulllastname, email, rut, role, position, users_divisions FROM users WHERE status = 1"
+    "SELECT id, fullname, fulllastname, email, rut, role, position, users_divisions FROM users WHERE status = 1 AND users_divisions = ?",
+    [userDivisionsId]
   );
 
   res.status(200).json({
