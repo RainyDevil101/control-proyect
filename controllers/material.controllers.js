@@ -93,7 +93,7 @@ const createMaterial = async (req = request, res = response) => {
     const id = resp.insertId;
 
     const usersEmail = await pool.query(
-      "SELECT email FROM users WHERE users_divisions = ? AND email != 'PENDIENTE'",
+      "SELECT email FROM users WHERE users_divisions = ? AND email != 'PENDIENTE' AND role = 'PLANNER_ROLE'",
       [userDivision]
     );
 
