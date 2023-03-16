@@ -34,12 +34,44 @@ const getDestination = async (req = request, res = response) => {
 
 const createDestination = async (req = request, res = response) => {
 
-    const destination = req.body;
+    const divisions = {
+        1000: "Teniente",
+        1001: "Andina",
+        1002: "Ventanas",
+        1003: "Salvador",
+        1004: "Chuquicamata",
+        1005: "Esporadicos andina",
+        1006: "Esporadicos teniente",
+        1007: "Casa matriz",
+    };
 
-    await pool.query('INSERT INTO destination set ?', [destination])
+    const divisionNull = null;
+
+    console.log(req.body);
+
+
+    const {id, name: nombre} = req.body;
+
+    const division_code = req.user[0].users_divisions;
+
+    const division = divisions[division_code] || divisionNull;
+
+    const status = 1;
+
+    const destination = {
+        id,
+        nombre,
+        division_code,
+        division,
+        status
+    };
+
+    const resp = await pool.query('INSERT INTO destination set ?', [destination]);
+
+    const idDestination = resp.insertId;
 
     res.status(200).json({
-        destination,
+        idDestination,
     });
 }
 

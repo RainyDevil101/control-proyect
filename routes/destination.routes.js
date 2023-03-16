@@ -44,9 +44,9 @@ router.get(
 router.post(
   "/",
   [
-    // validateJWT,
-    // validateRoles('ADMIN_ROLE', 'USER_ROLE'),
-    // validateFields,
+    validateJWT,
+    validateRoles('ADMIN_ROLE'),
+    validateFields,
   ],
   createDestination
 );

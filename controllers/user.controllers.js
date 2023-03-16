@@ -1,6 +1,7 @@
 const { response } = require("express");
 const pool = require("../database/database");
 const bcryptjs = require("bcryptjs");
+const { clean, format } = require("rut.js")
 
 // Get users
 
@@ -31,7 +32,6 @@ const getUser = async (req = request, res = response) => {
 };
 
 const createUser = async (req = request, res = response) => {
-  console.log(req.body);
   const {
     fullname,
     fulllastname,
@@ -39,9 +39,13 @@ const createUser = async (req = request, res = response) => {
     role,
     email,
     position,
-    rut,
     users_divisions,
   } = req.body;
+
+  // LIMPIA EL RUT
+  const cleanRut = clean(req.body.rut);
+  // CAMBIO DE FORMATO PARA SER GUARDADO
+  const rut = format(cleanRut);
 
   const salt = bcryptjs.genSaltSync(10);
   const password = bcryptjs.hashSync(passwordT, salt);

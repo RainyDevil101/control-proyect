@@ -1,5 +1,4 @@
 const { Router } = require("express");
-const { check } = require("express-validator");
 const {
   getMaterials,
   getMaterial,
@@ -12,7 +11,6 @@ const {
   validateRoles,
   validateFields,
 } = require("../middlewares");
-const { rutValidated } = require("../helpers/rut-validator");
 
 const router = Router();
 

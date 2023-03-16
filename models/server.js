@@ -18,6 +18,9 @@ class Server {
             location:    '/api/location',
             division:    '/api/division',
             material:    '/api/material',
+            refund:      '/api/refund',
+            client:      '/api/client',
+            place:       '/api/place',
             destination: '/api/destination',
         };
 
@@ -63,6 +66,9 @@ class Server {
         this.app.use(this.paths.location, require('../routes/location.routes'));
         this.app.use(this.paths.division, require('../routes/division.routes'));
         this.app.use(this.paths.material, require('../routes/material.routes'));
+        this.app.use(this.paths.refund, require('../routes/refund.routes'));
+        this.app.use(this.paths.client, require('../routes/client.routes'));
+        this.app.use(this.paths.place, require('../routes/dispatchPlaces.routes'));
         this.app.use(this.paths.destination, require('../routes/destination.routes'));
     };
 

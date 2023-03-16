@@ -40,9 +40,4 @@ module.exports = {
   mExists,
   mExistsUpdate,
   rutUnique,
-  // userByIdExists,
-  // validRole,
-  // allowedCollections,
-  // forumByIdExists,
-  // validPassword,
 };

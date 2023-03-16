@@ -1,0 +1,80 @@
+const { response } = require('express');
+const pool = require('../database/database');
+
+// Get dispatchPlaces
+
+const getPlaces = async (req = request, res = response) => {
+
+    const getUserDivisionId = req.user[0].users_divisions;
+
+    const getPlaces = await pool.query(
+        "SELECT * FROM dispatchPlaces WHERE status = 1 AND divisions_id = ?", [getUserDivisionId]
+    );
+
+    const places = Object.values(JSON.parse(JSON.stringify(getPlaces)));
+
+    res.status(200).json({
+        places,
+    });
+
+};
+
+const getPlace = async (req = request, res = response) => {
+
+    const {id} = req.params;
+
+    const getUserDivisionId = req.user[0].users_divisions;
+
+    const place = await pool.query(
+        "SELECT * FROM dispatchPlaces WHERE id = ? AND divisions_id = ?", [id, getUserDivisionId]
+    )
+
+    res.status(200).json({
+        place,
+    })
+};
+
+const createPlace = async (req = request, res = response) => {
+
+    const divisions_id = req.user[0].users_divisions;
+    const { place } = req.body.placeForm;
+
+    const dispatchPlaces = {divisions_id, place};
+
+    try {
+        const resp = await pool.query("INSERT INTO dispatchPlaces set ?", [dispatchPlaces]);
+
+        const id = resp.insertId;
+
+        return res.status(200).json({
+            msg: "Lugar de despacho registrado con éxito.",
+            id
+        });
+    } catch(error) {
+        console.log(error);
+        return res.status(400).json({
+            msg: "Error a registrar el lugar de despacho, intente nuevamente."
+        });
+    };
+};
+
+const updatePlace = async (req = request, res = response) => {
+
+    res.status(200).json({
+        msg: ":v"
+    })
+}
+
+const deletePlace = async (req = request, res = response) => {
+    res.status(200).json({
+      msg: "Lugar de despacho eliminado",
+    });
+  };
+
+module.exports = {
+    getPlaces,
+    getPlace,
+    createPlace,
+    updatePlace,
+    deletePlace
+}
