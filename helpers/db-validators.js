@@ -18,7 +18,6 @@ const rutUnique = async (rut = "") => {
 
     if (rutExists.length > 0) {
       const rut = rutExists[0].rut;
-      console.log(rut);
       throw new Error(`El rut ${rut} ya está registrado`);
     }
 };

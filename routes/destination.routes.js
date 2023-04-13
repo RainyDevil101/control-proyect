@@ -56,9 +56,9 @@ router.post(
 router.put(
   "/:id",
   [
-    // validateJWT,
-    // validateRoles('ADMIN_ROLE', 'USER_ROLE'),
-    // validateFields,
+    validateJWT,
+    validateRoles('ADMIN_ROLE', 'USER_ROLE'),
+    validateFields,
   ],
   updateDestination
 );
@@ -68,9 +68,9 @@ router.put(
 router.delete(
   "/:id",
   [
-    // validateJWT,
-    // validateRoles('ADMIN_ROLE', 'USER_ROLE'),
-    // validateFields,
+    validateJWT,
+    validateRoles('ADMIN_ROLE', 'USER_ROLE'),
+    validateFields,
   ],
   deleteDestination
 );

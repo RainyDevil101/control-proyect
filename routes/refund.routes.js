@@ -21,7 +21,7 @@ router.get(
   "/",
   [
     validateJWT,
-    validateRoles('REFUNDER_ROLE','OPERATOR_ROLE'),
+    validateRoles('REFUNDER_ROLE','OPERATOR_ROLE', 'ADMIN_ROLE'),
     validateFields,
   ],
   getRefunds
@@ -33,7 +33,7 @@ router.get(
   "/:id",
   [
     validateJWT,
-    validateRoles('REFUNDER_ROLE', 'OPERATOR_ROLE'),
+    validateRoles('REFUNDER_ROLE', 'OPERATOR_ROLE', 'ADMIN_ROLE'),
     validateFields,
   ],
   getRefund
@@ -45,7 +45,7 @@ router.post(
   "/",
   [
     validateJWT,
-    validateRoles('REFUNDER_ROLE','OPERATOR_ROLE'),
+    validateRoles('REFUNDER_ROLE','OPERATOR_ROLE', 'ADMIN_ROLE'),
     validateFields,
   ],
   createRefund
@@ -57,7 +57,7 @@ router.put(
   "/:id",
   [
     validateJWT,
-    validateRoles('OPERATOR_ROLE'),
+    validateRoles('OPERATOR_ROLE', 'ADMIN_ROLE'),
     validateFields,
   ],
   updateRefund
@@ -69,7 +69,7 @@ router.put(
   "/finish/:id",
   [
     validateJWT,
-    validateRoles('REFUNDER_ROLE'),
+    validateRoles('REFUNDER_ROLE', 'ADMIN_ROLE'),
     validateFields,
   ],
   finishRefund

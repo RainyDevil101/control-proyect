@@ -115,22 +115,22 @@ const updateRefund = async (req = request, res = response) => {
 const finishRefund = async (req = request, res = response) => {
 
   const { id } = req.params;
+  const { dataFormDelivery: delivery, dataFormReserve: reserve } = req.body;
   const userDivisionsId =  req.user[0].users_divisions;
 
-  const { reserve, delivery } = req.body.finishRefund;
 
   const finish_date = new Date();
   const statusDelivery = 'FINALIZADO';
 
   const refund = {
-    reserve,
     delivery,
+    reserve,
     finish_date,
     statusDelivery
   };
 
   const resp = await pool.query(
-    "UPDATE refund SET ? WHERE id = ? AND status 1 AND refund_division = ? AND statusDelivery = ?",
+    "UPDATE refund SET ? WHERE id = ? AND status = 1 AND refund_division = ?",
     [refund, id, userDivisionsId]
   )
 

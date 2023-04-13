@@ -22,8 +22,6 @@ const getDestination = async (req = request, res = response) => {
 
     const { id } = req.params;
 
-    console.log(id);
-
     const destination = await pool.query('SELECT * FROM destination WHERE id = ?', [id]);
 
     res.status(200).json({
@@ -47,9 +45,6 @@ const createDestination = async (req = request, res = response) => {
 
     const divisionNull = null;
 
-    console.log(req.body);
-
-
     const {id, name: nombre} = req.body;
 
     const division_code = req.user[0].users_divisions;
@@ -66,13 +61,37 @@ const createDestination = async (req = request, res = response) => {
         status
     };
 
-    const resp = await pool.query('INSERT INTO destination set ?', [destination]);
+    const idCreated = await pool.query('SELECT * FROM destination WHERE id = ?', [id]);
 
-    const idDestination = resp.insertId;
+    const verifyId = Object.values(JSON.parse(JSON.stringify(idCreated)));
 
-    res.status(200).json({
-        idDestination,
-    });
+    
+    if (verifyId.length > 0) {
+        return res.status(400).json({
+            msg: "El id ya se encuentra registrado",
+            ok: false
+        })
+        
+    } else {
+        
+        try {
+            const resp = await pool.query('INSERT INTO destination set ?', [destination]);
+            const idDestination = resp.insertId;
+            res.status(200).json({
+                idDestination,
+                ok: true
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(400).json({
+                msg: 'Error al registrar',
+                ok: false
+            })
+        }
+    
+    
+    }
+
 }
 
 const updateDestination = async (req = request, res = response) => {
@@ -96,8 +115,6 @@ const updateDestination = async (req = request, res = response) => {
 const deleteDestination = async (req = request, res = response) => {
 
     const { id } = req.params;
-
-    // const status = 0;
 
     await pool.query('UPDATE destination SET status = 0 WHERE id = ?', [id]);
 
