@@ -32,6 +32,8 @@ const getDestination = async (req = request, res = response) => {
 
 const createDestination = async (req = request, res = response) => {
 
+    const userDivisionsId = getUser[0].users_divisions;
+
     const divisions = {
         1000: "Teniente",
         1001: "Andina",
@@ -45,7 +47,7 @@ const createDestination = async (req = request, res = response) => {
 
     const divisionNull = null;
 
-    const {id, name: nombre} = req.body;
+    const { id, nombre } = req.body;
 
     const division_code = req.user[0].users_divisions;
 
@@ -61,19 +63,19 @@ const createDestination = async (req = request, res = response) => {
         status
     };
 
-    const idCreated = await pool.query('SELECT * FROM destination WHERE id = ?', [id]);
+    const idCreated = await pool.query('SELECT * FROM destination WHERE id = ? AND status = 1 AND division_code ?', [id, userDivisionsId,]);
 
     const verifyId = Object.values(JSON.parse(JSON.stringify(idCreated)));
 
-    
+
     if (verifyId.length > 0) {
         return res.status(400).json({
             msg: "El id ya se encuentra registrado",
             ok: false
         })
-        
+
     } else {
-        
+
         try {
             const resp = await pool.query('INSERT INTO destination set ?', [destination]);
             const idDestination = resp.insertId;
@@ -88,8 +90,8 @@ const createDestination = async (req = request, res = response) => {
                 ok: false
             })
         }
-    
-    
+
+
     }
 
 }
@@ -98,30 +100,49 @@ const updateDestination = async (req = request, res = response) => {
 
     const { id } = req.params;
 
-    const nombre = req.body.updateForum;
+    const { nombre } = req.body;
+    const userDivisionsId =  req.user[0].users_divisions;
 
     const destination = {
         nombre
     };
 
-    await pool.query('UPDATE destination SET ? WHERE id = ? AND status = 1', [destination, id]);
+    try {
+        const resp = await pool.query(
+            "UPDATE destination SET ? WHERE id = ? AND status = 1 AND division_code = ?",
+            [destination, id, userDivisionsId]
+        )
+        const idUpdated = resp.insertId;
 
-    res.status(200).json({
-        msg: "Destino actualizado",
-        ok : true,
-    })
+        return res.status(200).json({
+            idUpdated,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            msg: "Error al actualizar",
+        });
+    }
 }
 
 const deleteDestination = async (req = request, res = response) => {
 
     const { id } = req.params;
+    const userDivisionsId = req.user[0].users_divisions;
 
-    await pool.query('UPDATE destination SET status = 0 WHERE id = ?', [id]);
+    try {
+        await pool.query('UPDATE destination SET status = 0 WHERE id = ? AND division_code = ?', [id, userDivisionsId]);
 
-    res.status(200).json({
-        msg: "Destino eliminado",
-        ok: true,
-    })
+        res.status(200).json({
+            msg: "Destino eliminado",
+            ok: true,
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            msg: "Error al eliminar el destino",
+        });
+    }
 }
 
 module.exports = {

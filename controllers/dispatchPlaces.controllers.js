@@ -56,7 +56,7 @@ const getPlaces = async (req = request, res = response) => {
         pool.query(
             "SELECT * FROM dispatchPlaces WHERE status = 1 AND divisions_id = ? LIMIT ?, ?", [userDivisionsId, getFrom, getLimit]
         )
-    ])
+    ]);
 
     const places = Object.values(JSON.parse(JSON.stringify(getPlaces)));
 
@@ -141,8 +141,7 @@ const updatePlace = async (req = request, res = response) => {
 const deletePlace = async (req = request, res = response) => {
 
     const { id } = req.params;
-    const getUser = req.user;
-    const userDivisionsId = getUser[0].users_divisions;
+    const userDivisionsId = req.user[0].users_divisions;
 
     try {
 

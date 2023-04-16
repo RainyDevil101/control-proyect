@@ -7,17 +7,70 @@ const { clean, format } = require("rut.js")
 
 const getUsers = async (req = request, res = response) => {
 
-  const getUser = req.user;
+  const userDivisionsId = req.user[0].users_divisions;
+  const { page, all } = req.query;
 
-  const userDivisionsId = getUser[0].users_divisions;
+  if (all === 'true') {
 
-  const users = await pool.query(
-    "SELECT id, fullname, fulllastname, email, rut, role, position, users_divisions FROM users WHERE status = 1 AND users_divisions = ?",
+    const [getUsers] = await Promise.all([
+      pool.query(
+        "SELECT id, fullname, fulllastname, email, rut, role, position, users_divisions FROM users WHERE status = 1 AND users_divisions = ?",
+        [userDivisionsId]
+      )
+    ])
+
+    const users = Object.values(JSON.parse(JSON.stringify(getUsers)));
+
+    return res.status(200).json({
+      users,
+    });
+
+  }
+
+  let getPage = page;
+
+  if (isNaN(getPage)) {
+    return res.status(400).json({
+      msg: "Página no válida"
+    })
+  }
+
+  const getTotal = await pool.query(
+    "SELECT COUNT(*) AS Total FROM users WHERE status = 1 AND users_divisions = ?",
     [userDivisionsId]
   );
 
+  let setPage = Number(getPage);
+
+  const getLimit = 20;
+
+  const total = JSON.parse(JSON.stringify(getTotal[0]));
+  const totalValue = Object.values(total);
+  const numberOfPages = Math.ceil(totalValue[0] / getLimit);
+
+  if (setPage < 1) {
+    setPage = 1;
+  } else if (setPage > numberOfPages) {
+    setPage = numberOfPages;
+  }
+
+  const getFrom = (setPage * getLimit) - getLimit;
+
+  const [getUsers] = await Promise.all([
+    pool.query(
+      "SELECT id, fullname, fulllastname, email, rut, role, position, users_divisions FROM users WHERE status = 1 AND users_divisions = ? LIMIT ?, ?",
+      [userDivisionsId, getFrom, getLimit]
+    )
+  ]);
+
+  const users = Object.values(JSON.parse(JSON.stringify(getUsers)))
+  const totalFormated =  Object.values(JSON.parse(JSON.stringify(getTotal[0])));
+
   res.status(200).json({
     users,
+    total: totalFormated,
+    numberOfPages,
+    currentPage: setPage
   });
 };
 
