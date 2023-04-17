@@ -12,7 +12,7 @@ const getPlaces = async (req = request, res = response) => {
 
         const [getPlaces] = await Promise.all([
             pool.query(
-                "SELECT * FROM dispatchPlaces WHERE status = 1 AND divisions_id = ?", [userDivisionsId]
+                "SELECT * FROM dispatchplaces WHERE status = 1 AND divisions_id = ?", [userDivisionsId]
             )
         ])
 
@@ -54,7 +54,7 @@ const getPlaces = async (req = request, res = response) => {
 
     const [getPlaces] = await Promise.all([
         pool.query(
-            "SELECT * FROM dispatchPlaces WHERE status = 1 AND divisions_id = ? LIMIT ?, ?", [userDivisionsId, getFrom, getLimit]
+            "SELECT * FROM dispatchplaces WHERE status = 1 AND divisions_id = ? LIMIT ?, ?", [userDivisionsId, getFrom, getLimit]
         )
     ]);
 
@@ -76,7 +76,7 @@ const getPlace = async (req = request, res = response) => {
     const userDivisionsId = req.user[0].users_divisions;
 
     const place = await pool.query(
-        "SELECT * FROM dispatchPlaces WHERE id = ? AND divisions_id = ?", [id, userDivisionsId]
+        "SELECT * FROM dispatchplaces WHERE id = ? AND divisions_id = ?", [id, userDivisionsId]
     )
 
     res.status(200).json({
@@ -92,7 +92,7 @@ const createPlace = async (req = request, res = response) => {
     const dispatchPlaces = { divisions_id, place };
 
     try {
-        const resp = await pool.query("INSERT INTO dispatchPlaces set ?", [dispatchPlaces]);
+        const resp = await pool.query("INSERT INTO dispatchplaces set ?", [dispatchPlaces]);
 
         const id = resp.insertId;
 
@@ -122,7 +122,7 @@ const updatePlace = async (req = request, res = response) => {
 
     try {
         const resp = await pool.query(
-            "UPDATE dispatchPlaces SET ? WHERE id = ? AND status = 1 AND divisions_id = ?",
+            "UPDATE dispatchplaces SET ? WHERE id = ? AND status = 1 AND divisions_id = ?",
             [dispatchPlace, id, userDivisionsId]
         )
         const idUpdated = resp.insertId;
@@ -145,7 +145,7 @@ const deletePlace = async (req = request, res = response) => {
 
     try {
 
-        await pool.query('UPDATE dispatchPlaces SET status = 0 WHERE id = ? AND divisions_id = ?', [id, userDivisionsId])
+        await pool.query('UPDATE dispatchplaces SET status = 0 WHERE id = ? AND divisions_id = ?', [id, userDivisionsId])
 
         return res.status(200).json({
             msg: "Lugar de despacho eliminado",
