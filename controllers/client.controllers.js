@@ -43,7 +43,7 @@ const getClients = async (req = request, res = response) => {
 
   console.log(verifyTotal, 11111);
 
-  if (verifyTotal === 0) {
+  if (verifyTotal[0] === 0) {
     const [getClients] = await Promise.all([
       pool.query(
         "SELECT * FROM clientes WHERE status = 1 AND division_id = ?",
