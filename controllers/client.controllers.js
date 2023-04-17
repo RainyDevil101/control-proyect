@@ -39,6 +39,8 @@ const getClients = async (req = request, res = response) => {
     [userDivisionsId]
   );
 
+  console.log(getTotal, 11111);
+
   if (getTotal[0] === 0) {
     const [getClients] = await Promise.all([
       pool.query(
