@@ -39,6 +39,23 @@ const getClients = async (req = request, res = response) => {
     [userDivisionsId]
   );
 
+  if (getTotal[0] === 0) {
+    const [getClients] = await Promise.all([
+      pool.query(
+        "SELECT * FROM clientes WHERE status = 1 AND division_id = ?",
+        [userDivisionsId]
+      )
+    ])
+
+    const clients = Object.values(JSON.parse(JSON.stringify(getClients)));
+
+
+    return res.status(200).json({
+      clients,
+    });
+
+  }
+
   let setPage = Number(getPage);
 
   const getLimit = 20;
