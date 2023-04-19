@@ -50,6 +50,20 @@ const getPlaces = async (req = request, res = response) => {
         setPage = numberOfPages;
     }
 
+    if (totalValue[0] === 0) {
+        const [getPlaces] = await Promise.all([
+            pool.query(
+                "SELECT * FROM dispatchplaces WHERE status = 1 AND divisions_id = ?", [userDivisionsId]
+            )
+        ])
+
+        const places = Object.values(JSON.parse(JSON.stringify(getPlaces)));
+
+        return res.status(200).json({
+            places
+        });
+    }
+
     const getFrom = (setPage * getLimit) - getLimit;
 
     const [getPlaces] = await Promise.all([
