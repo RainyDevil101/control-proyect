@@ -14,14 +14,14 @@ const getRefundByDate = async (req = request, res = response) => {
     params.push(userDivisionsId);
 
     if (initDate.length > 0) {
-        query = query + " AND finish_date >= ?";
-        queryTotal = queryTotal + " AND finish_date >= ?";
+        query = query + " AND cast(r.finish_date as date) >= ?";
+        queryTotal = queryTotal + " AND cast(finish_date as date) >= ?";
         params.push(initDate);
     };
 
     if (finDate.length > 0) {
-        query = query + " AND finish_date <= ?";
-        queryTotal = queryTotal + " AND finish_date <= ?";
+        query = query + " AND cast(r.finish_date as date) <= ?";
+        queryTotal = queryTotal + " AND cast(finish_date as date) <= ?";
         params.push(finDate);
     };
 

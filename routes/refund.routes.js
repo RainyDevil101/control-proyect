@@ -57,7 +57,7 @@ router.put(
   "/:id",
   [
     validateJWT,
-    validateRoles('OPERATOR_ROLE', 'ADMIN_ROLE'),
+    validateRoles('OPERATOR_ROLE', 'ADMIN_ROLE', 'REFUNDER_ROLE'),
     validateFields,
   ],
   updateRefund
