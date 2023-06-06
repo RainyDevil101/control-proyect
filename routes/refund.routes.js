@@ -21,7 +21,7 @@ router.get(
   "/",
   [
     validateJWT,
-    validateRoles('REFUNDER_ROLE','OPERATOR_ROLE', 'ADMIN_ROLE'),
+    validateRoles('REFUNDER_ROLE', 'OPERATOR_ROLE', 'ADMIN_ROLE'),
     validateFields,
   ],
   getRefunds
@@ -45,7 +45,7 @@ router.post(
   "/",
   [
     validateJWT,
-    validateRoles('REFUNDER_ROLE','OPERATOR_ROLE', 'ADMIN_ROLE'),
+    validateRoles('REFUNDER_ROLE', 'OPERATOR_ROLE', 'ADMIN_ROLE'),
     validateFields,
   ],
   createRefund
@@ -73,6 +73,16 @@ router.put(
     validateFields,
   ],
   finishRefund
+);
+
+router.delete(
+  "/:id",
+  [
+    validateJWT,
+    validateRoles('REFUNDER_ROLE', 'ADMIN_ROLE'),
+    validateFields,
+  ],
+  deleteRefund
 );
 
 module.exports = router;
