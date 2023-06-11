@@ -1,11 +1,14 @@
 const { Router } = require("express");
+const { check } = require("express-validator");
 const {
-  getRefunds,
-  getRefund,
   createRefund,
-  updateRefund,
   deleteRefund,
   finishRefund,
+  getRefund,
+  getRefunds,
+  updateRefund,
+  updateRefundData,
+  updateRefundImageOne,
 } = require("../controllers/refund.controllers");
 const {
   validateJWT,
@@ -74,6 +77,32 @@ router.put(
   ],
   finishRefund
 );
+
+// Update refund DATA
+
+router.put(
+  "/update/:id",
+  [
+    validateJWT,
+    validateRoles('REFUNDER_ROLE', 'ADMIN_ROLE'),
+    validateFields,
+  ],
+  updateRefundData
+);
+
+// Update refund image one
+
+router.post(
+  "/updateImage/:id",
+  [
+    validateJWT,
+    validateRoles('REFUNDER_ROLE', 'ADMIN_ROLE'),
+    validateFields,
+  ],
+  updateRefundImageOne
+);
+
+// Delete refund
 
 router.delete(
   "/:id",

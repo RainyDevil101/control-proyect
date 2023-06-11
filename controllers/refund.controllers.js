@@ -177,20 +177,111 @@ const finishRefund = async (req = request, res = response) => {
             "UPDATE refund SET ? WHERE id = ? AND status = 1 AND refund_division = ?",
             [refund, id, userDivisionsId]
         )
-
         const idUpdated = resp.insertId;
-
         res.status(200).json({
             idUpdated
         });
 
     } catch (error) {
-
         console.log(error);
         res.status(400).json({
             msg: "Error"
         });
+    };
+};
 
+const updateRefundData = async (req = request, res = response) => {
+
+    const { id } = req.params;
+    const userDivisionsId = req.user[0].users_divisions;
+    const refundToUptade = req.body.trimmedRefund;
+    const collection = 'refunds';
+
+    if (refundToUptade.imageToDelete) {
+        const deleteImageOne = refundToUptade.imageToDelete;
+
+        const nameArr = deleteImageOne.split('/');
+        const name = nameArr[nameArr.length - 1];
+        const [public_id] = name.split('.');
+
+        cloudinary.uploader.destroy(`${collection}/${public_id}`);
+
+        delete refundToUptade.imageToDelete;
+    }
+
+    const { code,
+        quantity,
+        packageQuantity,
+        driverName,
+        driverLastname,
+        patent,
+        possibleUbication,
+        dispatchPlaces_id,
+        client,
+        observations,
+        image_one
+    } = refundToUptade;
+
+    const refund = {
+        code,
+        quantity,
+        packageQuantity,
+        driverName,
+        driverLastname,
+        patent,
+        possibleUbication,
+        dispatchPlaces_id,
+        client,
+        observations,
+        image_one
+    };
+
+    try {
+
+        const resp = await pool.query(
+            "UPDATE refund SET ? WHERE id = ? AND status = 1 AND refund_division = ?",
+            [refund, id, userDivisionsId]
+        )
+
+        const idUpdated = resp.insertId;
+
+        return res.status(200).json({
+            ok: true,
+            idUpdated,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            ok: false,
+            msg: "Error",
+        });
+    };
+};
+
+const updateRefundImageOne = async (req = request, res = response) => {
+
+    if (!req.files.file) return;
+
+    // const nameArr = linkImageOne.split('/');
+    // const name = nameArr[nameArr.length - 1];
+    // const [public_id] = name.split('.');
+    const { tempFilePath } = req.files.file;
+
+
+    try {
+
+        const { secure_url } = await cloudinary.uploader.upload(tempFilePath, { folder: "refunds" });
+
+
+        return res.status(200).json({
+            ok: true,
+            secure_url,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            ok: false,
+            secure_url: null,
+        });
     };
 
 };
@@ -251,10 +342,12 @@ const deleteRefund = async (req = request, res = response) => {
 };
 
 module.exports = {
-    getRefunds,
-    getRefund,
     createRefund,
-    updateRefund,
-    finishRefund,
     deleteRefund,
+    finishRefund,
+    getRefund,
+    getRefunds,
+    updateRefund,
+    updateRefundImageOne,
+    updateRefundData,
 };

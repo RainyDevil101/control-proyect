@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 
 class Server {
 
@@ -54,6 +55,12 @@ class Server {
         this.app.use( express.static('public') );
 
         this.app.use( express.json() );
+
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/',
+            createParentPath: true,
+        }));
 
     };
 
