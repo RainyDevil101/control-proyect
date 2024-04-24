@@ -141,9 +141,7 @@ const updateUser = async (req = request, res = response) => {
 const deleteUser = async (req = request, res = response) => {
   const { id } = req.params;
 
-  // await pool.query("UPDATE users SET status = 0 WHERE id = ?", [id]);
-
-  await pool.query('DELETE FROM users WHERE rut = ?', ["11.730.738-7"]);
+  await pool.query("UPDATE users SET status = 0 WHERE id = ?", [id]);
 
   res.status(200).json({
     msg: 'El usuario fue eliminado correctamente',
