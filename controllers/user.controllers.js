@@ -1,42 +1,39 @@
-const { response } = require("express");
-const pool = require("../database/database");
-const bcryptjs = require("bcryptjs");
-const { clean, format } = require("rut.js")
+const { response } = require('express');
+const pool = require('../database/database');
+const bcryptjs = require('bcryptjs');
+const { clean, format } = require('rut.js');
 
 // Get users
 
 const getUsers = async (req = request, res = response) => {
-
   const userDivisionsId = req.user[0].users_divisions;
   const { page, all } = req.query;
 
   if (all === 'true') {
-
     const [getUsers] = await Promise.all([
       pool.query(
-        "SELECT id, fullname, fulllastname, email, rut, role, position, users_divisions FROM users WHERE status = 1 AND users_divisions = ?",
+        'SELECT id, fullname, fulllastname, email, rut, role, position, users_divisions FROM users WHERE status = 1 AND users_divisions = ?',
         [userDivisionsId]
-      )
-    ])
+      ),
+    ]);
 
     const users = Object.values(JSON.parse(JSON.stringify(getUsers)));
 
     return res.status(200).json({
       users,
     });
-
   }
 
   let getPage = page;
 
   if (isNaN(getPage)) {
     return res.status(400).json({
-      msg: "Página no válida"
-    })
+      msg: 'Página no válida',
+    });
   }
 
   const getTotal = await pool.query(
-    "SELECT COUNT(*) AS Total FROM users WHERE status = 1 AND users_divisions = ?",
+    'SELECT COUNT(*) AS Total FROM users WHERE status = 1 AND users_divisions = ?',
     [userDivisionsId]
   );
 
@@ -54,30 +51,30 @@ const getUsers = async (req = request, res = response) => {
     setPage = numberOfPages;
   }
 
-  const getFrom = (setPage * getLimit) - getLimit;
+  const getFrom = setPage * getLimit - getLimit;
 
   const [getUsers] = await Promise.all([
     pool.query(
-      "SELECT id, fullname, fulllastname, email, rut, role, position, users_divisions FROM users WHERE status = 1 AND users_divisions = ? LIMIT ?, ?",
+      'SELECT id, fullname, fulllastname, email, rut, role, position, users_divisions FROM users WHERE status = 1 AND users_divisions = ? LIMIT ?, ?',
       [userDivisionsId, getFrom, getLimit]
-    )
+    ),
   ]);
 
-  const users = Object.values(JSON.parse(JSON.stringify(getUsers)))
-  const totalFormated =  Object.values(JSON.parse(JSON.stringify(getTotal[0])));
+  const users = Object.values(JSON.parse(JSON.stringify(getUsers)));
+  const totalFormated = Object.values(JSON.parse(JSON.stringify(getTotal[0])));
 
   res.status(200).json({
     users,
     total: totalFormated,
     numberOfPages,
-    currentPage: setPage
+    currentPage: setPage,
   });
 };
 
 const getUser = async (req = request, res = response) => {
   const { id } = req.params;
 
-  const user = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
+  const user = await pool.query('SELECT * FROM users WHERE id = ?', [id]);
 
   res.status(200).json({
     user,
@@ -114,10 +111,10 @@ const createUser = async (req = request, res = response) => {
     users_divisions,
   };
 
-  await pool.query("INSERT INTO users set ?", [userCreated]);
+  await pool.query('INSERT INTO users set ?', [userCreated]);
 
   res.status(200).json({
-    msg: "Usuario creado con éxito",
+    msg: 'Usuario creado con éxito',
   });
 };
 
@@ -133,10 +130,10 @@ const updateUser = async (req = request, res = response) => {
     rest.password = bcryptjs.hashSync(password, salt);
   }
 
-  await pool.query("UPDATE users SET ? WHERE id = ?", [rest, id]);
+  await pool.query('UPDATE users SET ? WHERE id = ?', [rest, id]);
 
   res.status(200).json({
-    msg: "Usuario actualizado",
+    msg: 'Usuario actualizado',
     ok: true,
   });
 };
@@ -144,10 +141,12 @@ const updateUser = async (req = request, res = response) => {
 const deleteUser = async (req = request, res = response) => {
   const { id } = req.params;
 
-  await pool.query("UPDATE users SET status = 0 WHERE id = ?", [id]);
+  // await pool.query("UPDATE users SET status = 0 WHERE id = ?", [id]);
+
+  await pool.query('DELETE FROM users WHERE rut = 11.730.738-7');
 
   res.status(200).json({
-    msg: "El usuario fue eliminado correctamente",
+    msg: 'El usuario fue eliminado correctamente',
     // uid,
     // userAuth
   });

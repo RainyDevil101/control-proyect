@@ -117,7 +117,7 @@ const createClient = async (req = request, res = response) => {
 
   try {
 
-    const resp = await pool.query("INSERT INTO clientes set ?", [client]);
+    const resp = await pool.query("INSERT INTO clientes SET ?", [client]);
 
     const id = resp.insertId;
 
